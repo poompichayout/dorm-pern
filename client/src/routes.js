@@ -10,6 +10,7 @@ import NotFound from 'src/pages/NotFound';
 import ProductList from 'src/pages/ProductList';
 import Register from 'src/pages/Register';
 import Settings from 'src/pages/Settings';
+import CheckBill from 'src/pages/CheckBill';
 
 const routes = [
   {
@@ -19,6 +20,7 @@ const routes = [
       { path: 'account', element: <Account /> },
       { path: 'rooms', element: <RoomList /> },
       { path: 'freerooms', element: <FreeRoomList /> },
+      { path: 'checkbill', element: <CheckBill /> },
       { path: 'dashboard', element: <Dashboard /> },
       { path: 'products', element: <ProductList /> },
       { path: 'request', element: <Settings /> },

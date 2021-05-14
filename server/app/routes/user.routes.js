@@ -24,6 +24,26 @@ router.get('/room/empty', async (req, res) => {
     res.send(room.rows);
 });
 
+// ผู้ใช้สามารถตรวจสอบค่าใช้จ่ายได้
+router.get('/checkbill', async (req, res) => {
+    try {
+        const {bname, roomid} = req.query;
+
+        const data = await pool.query(`SELECT * FROM bill where bname='${bname}' AND roomid=${roomid}`);
+
+        if(data.rows.length === 0) {
+            return res.status(200).json({data: [], message: "You have no bill pay"});
+        }
+
+        res.json(data.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({message: 'Can not get data'});
+    }
+    
+})
+
 // ผู้ใช้สามารถแจ้งความประสงค์ได้
 router.post('/request', async (req, res) => {
 

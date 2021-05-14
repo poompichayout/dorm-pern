@@ -55,7 +55,7 @@ const items = [
     title: 'แก้ไขข้อมูลส่วนตัว'
   },
   {
-    href: '/app/settings',
+    href: '/app/checkbill',
     icon: CreditCardIcon,
     title: 'ตรวจสอบค่าใช้จ่าย'
   },
