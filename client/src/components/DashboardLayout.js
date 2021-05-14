@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { experimentalStyled } from '@material-ui/core';
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
@@ -39,7 +39,20 @@ const DashboardLayoutContent = experimentalStyled('div')({
 });
 
 const DashboardLayout = () => {
+  const navigate = useNavigate();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
+  const { state } = useLocation();
+  if(state) {
+    var {...user} = state
+  }
+  
+  useEffect(() => {
+    if(!state){
+      navigate('/login', {replace: true});
+    }
+    console.log('state: ',state);
+    console.log("Dashboard Page: ", user);
+  })
 
   return (
     <DashboardLayoutRoot>
@@ -47,6 +60,7 @@ const DashboardLayout = () => {
       <DashboardSidebar
         onMobileClose={() => setMobileNavOpen(false)}
         openMobile={isMobileNavOpen}
+        userInfo={user}
       />
       <DashboardLayoutWrapper>
         <DashboardLayoutContainer>

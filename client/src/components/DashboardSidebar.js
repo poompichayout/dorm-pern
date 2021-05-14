@@ -22,11 +22,11 @@ import {
 } from 'react-feather';
 import NavItem from './NavItem';
 
-const user = {
-  avatar: 'http://web.reg.tu.ac.th/registrar/getstudentimage.asp?id=6209680062&Status=10',
-  jobTitle: 'โปรแกรมเมอร์เงินแสน',
-  name: 'ภูมิพิชญุตม์ คงเปี่ยม'
-};
+// const user = {
+//   avatar: 'http://web.reg.tu.ac.th/registrar/getstudentimage.asp?id=6209680062&Status=10',
+//   jobTitle: 'โปรแกรมเมอร์เงินแสน',
+//   name: 'ภูมิพิชญุตม์ คงเปี่ยม'
+// };
 
 const items = [
   {
@@ -71,8 +71,13 @@ const items = [
   },
 ];
 
-const DashboardSidebar = ({ onMobileClose, openMobile }) => {
+const DashboardSidebar = ({ onMobileClose, openMobile, userInfo }) => {
   const location = useLocation();
+  const user = {
+    avatar: 'http://web.reg.tu.ac.th/registrar/getstudentimage.asp?id=6209680062&Status=10',
+    jobTitle: 'โปรแกรมเมอร์เงินแสน',
+    ...userInfo
+  };
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -110,13 +115,13 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
           color="textPrimary"
           variant="h5"
         >
-          {user.name}
+          {user.firstname + " " + user.lastname}
         </Typography>
         <Typography
           color="textSecondary"
           variant="body2"
         >
-          {user.jobTitle}
+          {user.type}
         </Typography>
       </Box>
       <Divider />

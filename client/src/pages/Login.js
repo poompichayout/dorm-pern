@@ -1,5 +1,5 @@
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -8,7 +8,6 @@ import {
   Box,
   Button,
   Container,
-  Grid,
   Link,
   TextField,
   Typography
@@ -16,7 +15,6 @@ import {
 
 const Login = () => {
   const navigate = useNavigate();
-  const form = useRef(null);
   const [username, setUsername] = useState('6109680001');
   const [password, setPassword] = useState('1234567891001');
 
@@ -29,8 +27,11 @@ const Login = () => {
 
     axios.post('http://localhost:8080/api/auth/login', userInfo)
     .then(res => {
-      console.log(res.data.message);
-      console.log(res.data.userInfo);
+      console.log(res.data);
+      const user = res.data.userInfo;
+      alert(res.data.message);
+      console.log("login page: ", user)
+      navigate('/app/dashboard', { replace: true, state: user });
     })
     .catch(err => {
       console.error(err.message);
@@ -39,12 +40,10 @@ const Login = () => {
 
   const onChangeUsername = (value) => {
       setUsername(value);
-      console.log(value);
   }
 
   const onChangePassword = (value) => {
     setPassword(value);
-    console.log(value);
 }
 
   return (
@@ -68,21 +67,13 @@ const Login = () => {
               password: Yup.string().max(255).required('Password is required')
             })}
             onSubmit={() => {
-              //navigate('/app/dashboard', { replace: true });
+              
             }}
           >
-            {({
-              errors,
-              handleBlur,
-              isSubmitting,
-              touched
-            }) => (
-              <form ref={form} onSubmit={submit}>
+            {({ errors, handleBlur, isSubmitting, touched }) => (
+              <form onSubmit={submit}>
                 <Box sx={{ mb: 3 }}>
-                  <Typography
-                    color="textPrimary"
-                    variant="h2"
-                  >
+                  <Typography color="textPrimary" variant="h2">
                     เข้าสู่ระบบ
                   </Typography>
                 </Box>
@@ -124,17 +115,10 @@ const Login = () => {
                     เข้าสู่ระบบ
                   </Button>
                 </Box>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
+                <Typography color="textSecondary" variant="body1">
                   ยังไม่มีบัญชีใช่หรือไม่?
                   {' '}
-                  <Link
-                    component={RouterLink}
-                    to="/register"
-                    variant="h6"
-                  >
+                  <Link component={RouterLink} to="/register" variant="h6">
                     สมัครสมาชิก
                   </Link>
                 </Typography>
