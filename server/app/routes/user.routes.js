@@ -24,6 +24,45 @@ router.get('/room/empty', async (req, res) => {
     res.send(room.rows);
 });
 
+// ผู้ใช้สามารถแจ้งความประสงค์ได้
+router.post('/request', async (req, res) => {
+
+    try {
+        const {ssn, detail} = req.body;
+
+        var id = await pool.query('SELECT * FROM Inform_service ORDER BY serviceno DESC LIMIT 1;')
+        id = id.rows[0].serviceno;
+
+        await pool.query(`
+            INSERT INTO service
+            VALUES (
+                ${id+1},
+                ${ssn},
+                NOW()::timestamp,
+                False
+            );
+            
+            INSERT INTO inform_service
+            VALUES (
+                ${id+1},
+                ${ssn}
+            );
+
+            INSERT INTO Service_Detail
+            VALUES (
+                ${id+1}, ${ssn}, '${detail}'
+            );
+        `)
+
+        res.json({
+            message: 'Request send successfully'
+        });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({message: 'can not post'});
+    }
+});
+
 // ผู้ใช้สามารถจองห้องพักได้
 router.post('/booking_room', async (req, res) => {
     const {
@@ -62,6 +101,5 @@ router.post('/booking_room', async (req, res) => {
     }
 });
 
-router.put
 
 module.exports = router;

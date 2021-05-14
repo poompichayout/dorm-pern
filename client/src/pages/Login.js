@@ -27,11 +27,10 @@ const Login = () => {
 
     axios.post('http://localhost:8080/api/auth/login', userInfo)
     .then(res => {
-      console.log(res.data);
       const user = res.data.userInfo;
       alert(res.data.message);
-      console.log("login page: ", user)
-      navigate('/app/dashboard', { replace: true, state: user });
+      localStorage.setItem('user', JSON.stringify(user));
+      navigate('/app/dashboard', { replace: true });
     })
     .catch(err => {
       console.error(err.message);

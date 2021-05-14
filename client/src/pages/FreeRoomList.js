@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet';
 import { Box, Container } from '@material-ui/core';
 import RoomListResults from 'src/components/customer/RoomListResults';
-// import customers2 from 'src/__mocks__/customers';
 import {useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -10,7 +9,7 @@ const RoomList = () => {
   const [customers, setCustomers] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/admin/getallroom')
+    axios.get('http://localhost:8080/api/admin/getallroom/true')
       .then(res => res.data)
       .then(data => {
         console.log(data)
@@ -22,7 +21,7 @@ const RoomList = () => {
   return (
     <>
       <Helmet>
-        <title>ข้อมูลห้องพัก</title>
+        <title>ข้อมูลห้องพักว่าง</title>
       </Helmet>
       <Box
         sx={{

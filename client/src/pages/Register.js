@@ -1,7 +1,9 @@
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import axios from 'axios';
 import {
   Box,
   Button,
@@ -10,41 +12,64 @@ import {
   FormHelperText,
   Link,
   TextField,
-  Typography
+  Typography,
+  MenuItem,
 } from '@material-ui/core';
 
 const Register = () => {
   const navigate = useNavigate();
+  const [registerForm, setRegisterForm] = useState({
+    username: '',
+    password: '',
+    firstname: '',
+    lastname: '',
+    gender: 'M',
+    type: 'student'
+  })
+
+  const onChange = (name, value) => {
+    setRegisterForm({...registerForm, [name]: value});
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log(registerForm);
+    axios.post('http://localhost:8080/api/auth/register', registerForm)
+    .then(res => {
+      alert(res.data.message);
+      navigate('/login', { replace: true });
+    })
+    .catch(err => {
+      console.error(err.message);
+    })
+  };
 
   return (
     <>
       <Helmet>
-        <title>Register | Material Kit</title>
+        <title>สมัครสมาชิกสุดเจ๋ง</title>
       </Helmet>
       <Box
         sx={{
           backgroundColor: 'background.default',
           display: 'flex',
           flexDirection: 'column',
-          height: '100%',
-          justifyContent: 'center'
+          height: 'auto',
+          justifyContent: 'center',
+          pb: '50px'
         }}
       >
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" >
           <Formik
             initialValues={{
-              email: '',
-              firstName: '',
-              lastName: '',
-              password: '',
               policy: false
             }}
             validationSchema={
               Yup.object().shape({
-                email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+                username: Yup.number().required('username is required'),
                 firstName: Yup.string().max(255).required('First name is required'),
                 lastName: Yup.string().max(255).required('Last name is required'),
-                password: Yup.string().max(255).required('password is required'),
+                password: Yup.string().min(13).max(13).required('password is required'),
                 policy: Yup.boolean().oneOf([true], 'This field must be checked')
               })
             }
@@ -61,22 +86,29 @@ const Register = () => {
               touched,
               values
             }) => (
-              <form onSubmit={handleSubmit}>
-                <Box sx={{ mb: 3 }}>
-                  <Typography
-                    color="textPrimary"
-                    variant="h2"
-                  >
-                    Create new account
+              <form onSubmit={onSubmit}>
+                <Box sx={{ mb: '10px', mt: 3 }}>
+                  <Typography color="textPrimary"  variant="h2">
+                    สมัครสมาชิกใหม่
                   </Typography>
-                  <Typography
-                    color="textSecondary"
-                    gutterBottom
-                    variant="body2"
-                  >
-                    Use your email to create new account
+                  <Typography color="textSecondary" gutterBottom variant="body2" margin='normal'>
+                    ใช้รหัสนักศึกษาหรือรหัสพนักงานเป็น username<br/>
+                    และรหัสประจำตัวประชาชนเป็น password<br/>
+                    สามารถระบุเป็นภาษาไทยได้
                   </Typography>
                 </Box>
+                <TextField
+                  error={Boolean(touched.username && errors.username)}
+                  fullWidth
+                  helperText={touched.username && errors.username}
+                  label="Username"
+                  margin="normal"
+                  name="username"
+                  onBlur={handleBlur}
+                  onChange={e => onChange('username',e.target.value)}
+                  value={registerForm.username}
+                  variant="outlined"
+                />
                 <TextField
                   error={Boolean(touched.firstName && errors.firstName)}
                   fullWidth
@@ -85,8 +117,8 @@ const Register = () => {
                   margin="normal"
                   name="firstName"
                   onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.firstName}
+                  onChange={e => onChange('firstname',e.target.value)}
+                  value={registerForm.firstname}
                   variant="outlined"
                 />
                 <TextField
@@ -97,21 +129,8 @@ const Register = () => {
                   margin="normal"
                   name="lastName"
                   onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.lastName}
-                  variant="outlined"
-                />
-                <TextField
-                  error={Boolean(touched.email && errors.email)}
-                  fullWidth
-                  helperText={touched.email && errors.email}
-                  label="Email Address"
-                  margin="normal"
-                  name="email"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="email"
-                  value={values.email}
+                  onChange={e => onChange('lastname',e.target.value)}
+                  value={registerForm.lastname}
                   variant="outlined"
                 />
                 <TextField
@@ -122,11 +141,22 @@ const Register = () => {
                   margin="normal"
                   name="password"
                   onBlur={handleBlur}
-                  onChange={handleChange}
+                  onChange={e => onChange('password',e.target.value)}
                   type="password"
-                  value={values.password}
+                  value={registerForm.password}
                   variant="outlined"
                 />
+                <TextField id="select" label="gender" value={registerForm.gender} select onChange={e => onChange('gender',e.target.value)}
+                margin="normal" fullWidth>
+                  <MenuItem value="M">ชาย</MenuItem>
+                  <MenuItem value="F">หญิง</MenuItem>
+                  <MenuItem value="O">ไม่ระบุ</MenuItem>
+                </TextField>
+                <TextField id="select" label="type" value={registerForm.type} select onChange={e => onChange('type',e.target.value)} 
+                margin="normal" fullWidth>
+                  <MenuItem value="student">นักเรียน</MenuItem>
+                  <MenuItem value="staff">พนักงาน</MenuItem>
+                </TextField>
                 <Box
                   sx={{
                     alignItems: 'center',
@@ -134,16 +164,9 @@ const Register = () => {
                     ml: -1
                   }}
                 >
-                  <Checkbox
-                    checked={values.policy}
-                    name="policy"
-                    onChange={handleChange}
-                  />
-                  <Typography
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    I have read the
+                  <Checkbox checked={values.policy} name="policy" onChange={handleChange} />
+                  <Typography color="textSecondary" variant="body1" >
+                    ฉันยอมรับ
                     {' '}
                     <Link
                       color="primary"
@@ -152,7 +175,7 @@ const Register = () => {
                       underline="always"
                       variant="h6"
                     >
-                      Terms and Conditions
+                      เงื่อนไขและข้อตกลง
                     </Link>
                   </Typography>
                 </Box>
@@ -170,21 +193,21 @@ const Register = () => {
                     type="submit"
                     variant="contained"
                   >
-                    Sign up now
+                    สมัครสมาชิก
                   </Button>
                 </Box>
                 <Typography
                   color="textSecondary"
                   variant="body1"
                 >
-                  Have an account?
+                  มีบัญชีอยู่แล้ว?
                   {' '}
                   <Link
                     component={RouterLink}
                     to="/login"
                     variant="h6"
                   >
-                    Sign in
+                    เข้าสู่ระบบ
                   </Link>
                 </Typography>
               </form>

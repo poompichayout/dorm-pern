@@ -1,44 +1,46 @@
 const router = require('express').Router();
 const pool = require('../config/db.config');
-const jwtGenerator = require('../config/jwtGenerator');
 
 
 // ผู้ใช้สามารถสมัครสมาชิกได้
 router.post('/register', async (req, res) => {
     try{
         /* destruct variable from req.body */
-        const {ssn, firstname, lastname, sex, type, id} = req.body;
+        const {password, firstname, lastname, gender, type, username} = req.body;
 
         /* check if user exist (if exists throw an error) */
 
-        const user = await pool.query(`SELECT * FROM Tenant WHERE ssn=${ssn}`);
+        const user = await pool.query(`SELECT * FROM Tenant WHERE ssn=${password}`);
         if(user.rows.length !== 0) {
-            return res.sendStatus(401).send('User already exist');
+            return res.status(401).json({
+                message:'User already exist'
+            });
         }
 
-        const newUser = await pool.query(`INSERT INTO Tenant (
+        await pool.query(`INSERT INTO Tenant (
             ssn, firstname, lastname, sex, type
         ) VALUES (
-            '${ssn}',
+            ${password},
             '${firstname}',
             '${lastname}',
-            '${sex}',
+            '${gender}',
             '${type}'
-        ) RETURNING *;
+        );
         
         INSERT INTO ${type} (
             ${type}Id, SSN
         ) VALUES (
-            '${id}',
-            '${ssn}'
-        ) RETURNING *;`);
+            ${username},
+            ${password}
+        );`)
 
-        const token = jwtGenerator(newUser[1].rows[0].id);
-        res.json({token});
+        res.json({
+            message: 'Registration Successful'
+        });
 
     } catch (err) {
         console.error(err.message);
-        res.sendStatus(500).json({message: 'Server Error'});
+        res.status(500).json({message: 'Server Error'});
     }
     
 });

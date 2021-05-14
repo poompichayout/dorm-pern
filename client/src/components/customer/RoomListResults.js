@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
+import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Avatar,
@@ -133,7 +134,10 @@ const RoomListResults = ({ customers, ...rest }) => {
                     {customer._roomer}
                   </TableCell>
                   <TableCell>
-                    {customer._status? 'ว่าง':'ไม่ว่าง'}
+                    {customer._status? 
+                      <CheckCircleRoundedIcon style={{color: 'green'}} />:
+                      <RemoveCircleRoundedIcon style={{color: 'red'}} />
+                    }
                   </TableCell>
                   <TableCell>
                     {`${customer.price.toLocaleString('en-US', {

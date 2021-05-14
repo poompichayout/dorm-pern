@@ -3,6 +3,7 @@ import DashboardLayout from 'src/components/DashboardLayout';
 import MainLayout from 'src/components/MainLayout';
 import Account from 'src/pages/Account';
 import RoomList from 'src/pages/RoomList';
+import FreeRoomList from 'src/pages/FreeRoomList';
 import Dashboard from 'src/pages/Dashboard';
 import Login from 'src/pages/Login';
 import NotFound from 'src/pages/NotFound';
@@ -16,10 +17,11 @@ const routes = [
     element: <DashboardLayout />,
     children: [
       { path: 'account', element: <Account /> },
-      { path: 'customers', element: <RoomList /> },
+      { path: 'rooms', element: <RoomList /> },
+      { path: 'freerooms', element: <FreeRoomList /> },
       { path: 'dashboard', element: <Dashboard /> },
       { path: 'products', element: <ProductList /> },
-      { path: 'settings', element: <Settings /> },
+      { path: 'request', element: <Settings /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },

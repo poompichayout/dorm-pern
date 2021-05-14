@@ -35,14 +35,19 @@ const items = [
     title: 'หน้าหลัก'
   },
   {
-    href: '/app/customers',
+    href: '/app/rooms',
     icon: UsersIcon,
     title: 'จัดการห้องพัก'
   },
   {
+    href: '/app/freerooms',
+    icon: UsersIcon,
+    title: 'ข้อมูลห้องพักว่าง'
+  },
+  {
     href: '/app/products',
     icon: EditIcon,
-    title: 'จัดการเด็กๆ'
+    title: 'ข้อมูลผู้พักแต่ละห้อง'
   },
   {
     href: '/app/account',
@@ -52,12 +57,12 @@ const items = [
   {
     href: '/app/settings',
     icon: CreditCardIcon,
-    title: 'ชำระค่าใช้จ่าย'
+    title: 'ตรวจสอบค่าใช้จ่าย'
   },
   {
-    href: '/app/settings',
+    href: '/app/request',
     icon: DollarSignIcon,
-    title: 'ใบเสร็จ'
+    title: 'แจ้งความประสงค์'
   },
   {
     href: '/login',
