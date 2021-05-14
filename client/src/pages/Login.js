@@ -1,7 +1,9 @@
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import axios from 'axios';
 import {
   Box,
   Button,
@@ -11,16 +13,44 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
-import FacebookIcon from 'src/icons/Facebook';
-import GoogleIcon from 'src/icons/Google';
 
 const Login = () => {
   const navigate = useNavigate();
+  const form = useRef(null);
+  const [username, setUsername] = useState('6109680001');
+  const [password, setPassword] = useState('1234567891001');
+
+  const submit = (e) => {
+    e.preventDefault();
+    const userInfo = {
+      username,
+      password
+    }
+
+    axios.post('http://localhost:8080/api/auth/login', userInfo)
+    .then(res => {
+      console.log(res.data.message);
+      console.log(res.data.userInfo);
+    })
+    .catch(err => {
+      console.error(err.message);
+    })
+  }
+
+  const onChangeUsername = (value) => {
+      setUsername(value);
+      console.log(value);
+  }
+
+  const onChangePassword = (value) => {
+    setPassword(value);
+    console.log(value);
+}
 
   return (
     <>
       <Helmet>
-        <title>Login | Material Kit</title>
+        <title>เข้าสู่ระบบสุดเจ๋ง</title>
       </Helmet>
       <Box
         sx={{
@@ -33,104 +63,40 @@ const Login = () => {
       >
         <Container maxWidth="sm">
           <Formik
-            initialValues={{
-              email: 'demo@devias.io',
-              password: 'Password123'
-            }}
             validationSchema={Yup.object().shape({
-              email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+              username: Yup.string().max(255).required('Username is required'),
               password: Yup.string().max(255).required('Password is required')
             })}
             onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
+              //navigate('/app/dashboard', { replace: true });
             }}
           >
             {({
               errors,
               handleBlur,
-              handleChange,
-              handleSubmit,
               isSubmitting,
-              touched,
-              values
+              touched
             }) => (
-              <form onSubmit={handleSubmit}>
+              <form ref={form} onSubmit={submit}>
                 <Box sx={{ mb: 3 }}>
                   <Typography
                     color="textPrimary"
                     variant="h2"
                   >
-                    Sign in
-                  </Typography>
-                  <Typography
-                    color="textSecondary"
-                    gutterBottom
-                    variant="body2"
-                  >
-                    Sign in on the internal platform
-                  </Typography>
-                </Box>
-                <Grid
-                  container
-                  spacing={3}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      color="primary"
-                      fullWidth
-                      startIcon={<FacebookIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      fullWidth
-                      startIcon={<GoogleIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Google
-                    </Button>
-                  </Grid>
-                </Grid>
-                <Box
-                  sx={{
-                    pb: 1,
-                    pt: 3
-                  }}
-                >
-                  <Typography
-                    align="center"
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    or login with email address
+                    เข้าสู่ระบบ
                   </Typography>
                 </Box>
                 <TextField
-                  error={Boolean(touched.email && errors.email)}
+                  error={Boolean(touched.username && errors.username)}
                   fullWidth
-                  helperText={touched.email && errors.email}
-                  label="Email Address"
+                  helperText={touched.username && errors.username}
+                  label="Username"
                   margin="normal"
-                  name="email"
+                  name="username"
                   onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="email"
-                  value={values.email}
+                  onChange={e => onChangeUsername(e.target.value)}
+                  type="text"
+                  value={username}
                   variant="outlined"
                 />
                 <TextField
@@ -141,9 +107,9 @@ const Login = () => {
                   margin="normal"
                   name="password"
                   onBlur={handleBlur}
-                  onChange={handleChange}
+                  onChange={e => onChangePassword(e.target.value)}
                   type="password"
-                  value={values.password}
+                  value={password}
                   variant="outlined"
                 />
                 <Box sx={{ py: 2 }}>
@@ -155,21 +121,21 @@ const Login = () => {
                     type="submit"
                     variant="contained"
                   >
-                    Sign in now
+                    เข้าสู่ระบบ
                   </Button>
                 </Box>
                 <Typography
                   color="textSecondary"
                   variant="body1"
                 >
-                  Don&apos;t have an account?
+                  ยังไม่มีบัญชีใช่หรือไม่?
                   {' '}
                   <Link
                     component={RouterLink}
                     to="/register"
                     variant="h6"
                   >
-                    Sign up
+                    สมัครสมาชิก
                   </Link>
                 </Typography>
               </form>

@@ -54,9 +54,16 @@ router.post('/login', async (req, res) => {
             return res.sendStatus(401).send('Invalid Username or password is incorrect');
         }
         
-        const user = student.rows.length === 0? staff:student;
-        const token = jwtGenerator(user.rows[0].id)
-        res.json({token});
+        // const user = student.rows.length === 0? staff:student;
+        const userData = await pool.query(`SELECT * FROM Tenant where ssn=${password}`);
+        const userInfo = userData.rows[0];
+
+        // req.session.user = userInfo;
+
+        res.json({
+                message: "Authenticate Successful!",
+                userInfo
+        });
 
     } catch (err) {
         console.error(err.message);
