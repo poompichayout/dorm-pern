@@ -34,7 +34,7 @@ const Register = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(registerForm);
-    axios.post('http://localhost:8080/api/auth/register', registerForm)
+    axios.post('/api/auth/register', registerForm)
     .then(res => {
       alert(res.data.message);
       navigate('/login', { replace: true });

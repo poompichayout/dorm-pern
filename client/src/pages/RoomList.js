@@ -10,7 +10,7 @@ const RoomList = () => {
   const [customers, setCustomers] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/admin/getallroom')
+    axios.get('/api/admin/getallroom')
       .then(res => res.data)
       .then(data => {
         console.log(data)

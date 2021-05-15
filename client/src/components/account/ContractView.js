@@ -22,7 +22,7 @@ const ContractView = (props) => {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/user/contract/${user.ssn}`)
+    axios.get(`/api/user/contract/${user.ssn}`)
     .then(res => {
       setContract(res.data);
     }).catch(err => {

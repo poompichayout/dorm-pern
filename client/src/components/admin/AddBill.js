@@ -32,7 +32,7 @@ const AddBill = (props) => {
   
   const onSubmit = (e) => {
     e.preventDefault();
-    axios.post(`http://localhost:8080/api/admin/addbill`, bill)
+    axios.post(`/api/admin/addbill`, bill)
     .then(res => {
       alert(res.data.message);
     }).catch(err => {

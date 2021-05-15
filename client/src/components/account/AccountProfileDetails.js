@@ -49,7 +49,7 @@ const AccountProfileDetails = (props) => {
 
     console.log(user);
 
-    axios.put(`http://localhost:8080/api/user/update/account/${user.ssn}`, {
+    axios.put(`/api/user/update/account/${user.ssn}`, {
       params: {...values}
     }).then( res => {
       alert(res.data.message);

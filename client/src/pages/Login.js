@@ -25,7 +25,7 @@ const Login = () => {
       password
     }
 
-    axios.post('http://localhost:8080/api/auth/login', userInfo)
+    axios.post('/api/auth/login', userInfo)
     .then(res => {
       const user = res.data.userInfo;
       alert(res.data.message);

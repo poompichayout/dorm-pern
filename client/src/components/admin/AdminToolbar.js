@@ -35,7 +35,7 @@ const AdminToolbar = (props) => {
   
   const onContractSubmit = (e) => {
     e.preventDefault();
-    axios.get(`http://localhost:8080/api/user/contract/${ssn}`)
+    axios.get(`/api/user/contract/${ssn}`)
     .then(res => {
       console.log('contracts: ',res.data);
       navigate('/app/admin', { state: { contracts: res.data}});
@@ -46,7 +46,7 @@ const AdminToolbar = (props) => {
 
   const onRoomDataSubmit = (e) => {
     e.preventDefault();
-    axios.get(`http://localhost:8080/api/admin/${room.bname}/${room.roomid}`)
+    axios.get(`/api/admin/${room.bname}/${room.roomid}`)
     .then(res => {
       console.log('room data: ',res.data);
       navigate('/app/admin', { state: { people: res.data}});
