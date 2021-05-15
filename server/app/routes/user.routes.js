@@ -2,7 +2,7 @@ const router = require('express').Router();
 const pool = require('../config/db.config');
 
 // ผู้ใช้สามารถอัพเดตข้อมูลได้
-router.put('/update/:id', async (req, res) => {
+router.put('/update/account/:id', async (req, res) => {
 
     try {
         const {firstname, lastname, phone, gender} = req.body.params;
@@ -132,15 +132,72 @@ router.post('/booking_room', async (req, res) => {
 });
 
 // ผู้ใช้สามารถเปลี่ยนห้องพักได้
+router.put('/update/room', async (req, res) => {
+    try {
+        const { oldbname, oldroomid, newbname, newroomid, ssn } = req.body;
 
+        const room = await pool.query(`SELECT * FROM Room WHERE BName='${newbname}' AND RoomId=${newroomid}`);
+
+        if(room.rows.length === 0)
+            return res.status(200).send({message: 'Building Or Room Not Found!'});
+
+        await pool.query(`
+            UPDATE Tenant
+            SET BName='${newbname}', RoomId=${newroomid}
+            WHERE ssn=${ssn};
+
+            UPDATE Room
+            SET _status=true
+            WHERE BName='${oldbname}' AND RoomId=${oldroomid};
+        `)
+
+        res.json({message: 'Update Successful!'});
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({message: 'Server Error'});
+    }
+});
 
 // ผู้ใช้สามารถยกเลิกห้องพักได้
+router.put('/cancel/room', async (req, res) => {
+    try {
+        const { bname, roomid, ssn } = req.body;
 
+        await pool.query(`
+            UPDATE Contract
+            SET end_date=NOW(), status=FALSE
+            WHERE bname=${bname} AND roomid=${roomid} AND ssn=${ssn};
 
-// ผู้ใช้สามารถเลือกผู้อาศัยร่วมได้
+            UPDATE Tenant
+            SET bname=NULL, RoomId=NULL
+            WHERE ssn=${ssn};
+        `)
 
+        res.json({message: 'Cancel Room Successful!'});
+    
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({message: 'Server Error'});
+    }
+});
 
 // ผู้ใช้สามารถตรวจสอบรายละเอียดของสัญญาตัวเองได้
+router.get('/contract/:ssn', async (req, res) => {
+    try {
+        const {ssn} = req.params;
 
+        const data = await pool.query(`
+            SELECT *
+            FROM Contract
+            WHERE SSN=${ssn}
+        `)
+
+        res.json(data.rows);
+        
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({message: 'Server Error'});
+    }
+});
 
 module.exports = router;

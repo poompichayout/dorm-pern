@@ -7,6 +7,7 @@ import {
 import AccountProfile from 'src/components/account/AccountProfile';
 import AccountProfileDetails from 'src/components/account/AccountProfileDetails';
 import BookRoom from 'src/components/account/BookRoom';
+import UpdateRoom from 'src/components/account/UpdateRoom';
 
 const Account = () => {
   
@@ -30,39 +31,16 @@ const Account = () => {
       }}
     >
       <Container maxWidth="lg">
-        <Grid
-          container
-          spacing={3}
-        >
-          <Grid
-            item
-            lg={4}
-            md={6}
-            xs={12}
-          >
+        <Grid  container spacing={3}>
+          <Grid item lg={4} md={6} xs={12}>
             <AccountProfile />
           </Grid>
-          <Grid
-            item
-            lg={8}
-            md={6}
-            xs={12}
-          >
+          <Grid item lg={8} md={6} xs={12}>
             <AccountProfileDetails user={user} />
           </Grid>
         </Grid>
-        <Grid
-          container
-          spacing={3}
-          mt={3}
-        >
-          <Grid
-            item
-            lg={4}
-            md={6}
-            xs={12}
-          >
-          </Grid>
+        <Grid container spacing={3} mt={3}>
+          <Grid item lg={4} md={6} xs={12}> </Grid>
           <Grid
             item
             lg={8}
@@ -70,6 +48,18 @@ const Account = () => {
             xs={12}
           >
             <BookRoom user={user} />
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={3} mt={3}>
+          <Grid item lg={4} md={6} xs={12}> </Grid>
+          <Grid
+            item
+            lg={8}
+            md={6}
+            xs={12}
+          >
+            <UpdateRoom user={user} />
           </Grid>
         </Grid>
       </Container>

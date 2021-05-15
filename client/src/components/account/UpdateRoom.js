@@ -11,14 +11,12 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 
-const BookRoom = (props) => {
+const UpdateRoom = (props) => {
   const user = props.user;
   const [values, setValues] = useState({
     bname: user.bname,
     roomid: user.roomid
   });
-
-  
 
   const handleChange = (event) => {
     setValues({
@@ -27,13 +25,34 @@ const BookRoom = (props) => {
     });
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-
+  const onCancelSubmit = () => {
     axios.post(`http://localhost:8080/api/user/booking_room`, {
       ...values,
       ssn: user.ssn
     }).then( res => {
+      alert(res.data.message);
+      localStorage.setItem('user', JSON.stringify({
+        ...user,
+        bname: values.bname,
+        roomid: values.roomid
+      }))
+    }).catch(err => {
+      console.error(err.message);
+    })
+  }
+
+  const onUpdateSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      oldbname: user.bname,
+      oldroomid: user.roomid,
+      newbname: values.bname,
+      newroomid: values.roomid,
+      ssn: user.ssn
+    }
+
+    axios.put(`http://localhost:8080/api/user/update/room`, data)
+    .then( res => {
       alert(res.data.message);
       localStorage.setItem('user', JSON.stringify({
         ...user,
@@ -50,12 +69,12 @@ const BookRoom = (props) => {
       autoComplete="off"
       noValidate
       {...props}
-      onSubmit={onSubmit}
+      onSubmit={onUpdateSubmit}
     >
       <Card>
         <CardHeader
-          subheader="เพิ่มข้อมูลการจองห้องพัก"
-          title="จองห้องพัก"
+          subheader="เปลี่ยนหรือยกเลิกห้องพัก"
+          title="แก้ไขข้อมูลห้องพัก"
         />
         <Divider />
         <CardContent>
@@ -70,14 +89,12 @@ const BookRoom = (props) => {
             >
               <TextField
                 fullWidth
-                helperText="ระบุชื่อห้อง"
                 label="ระบุตึก"
                 name="bname"
                 onChange={handleChange}
                 required
                 value={values.bname}
                 variant="outlined"
-                disabled={user.bname && user.roomid}
               />
             </Grid>
             <Grid
@@ -93,7 +110,6 @@ const BookRoom = (props) => {
                 required
                 value={values.roomid}
                 variant="outlined"
-                disabled={user.bname && user.roomid}
               />
             </Grid>
           </Grid>
@@ -106,13 +122,27 @@ const BookRoom = (props) => {
             p: 2
           }}
         >
+          <Box mr={3}>
+          <Button
+            color="secondary"
+            variant="contained"
+            type="submit"
+            name="cancel"
+            onClick={onCancelSubmit}
+            disabled={user.bname !== values.bname || user.roomid !== values.roomid}
+          >
+            ยกเลิกห้องพัก
+          </Button>
+          </Box>
+
           <Button
             color="primary"
             variant="contained"
             type="submit"
-            disabled={user.bname && user.roomid}
+            name="update"
+            disabled={user.bname === values.bname && user.roomid === values.roomid}
           >
-            จองห้องพัก
+            เปลี่ยนห้องพัก
           </Button>
         </Box>
       </Card>
@@ -120,4 +150,4 @@ const BookRoom = (props) => {
   );
 };
 
-export default BookRoom;
+export default UpdateRoom;
