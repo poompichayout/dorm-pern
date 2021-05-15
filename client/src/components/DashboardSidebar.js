@@ -46,9 +46,9 @@ const items = [
     title: 'ข้อมูลห้องพักว่าง'
   },
   {
-    href: '/app/products',
+    href: '/app/admin',
     icon: EditIcon,
-    title: 'ข้อมูลผู้พักแต่ละห้อง'
+    title: 'หน้าผู้จัดการ'
   },
   {
     href: '/app/account',
@@ -120,6 +120,7 @@ const DashboardSidebar = ({ onMobileClose, openMobile, userInfo }) => {
         <Typography
           color="textPrimary"
           variant="h5"
+          mt={1}
         >
           {user.firstname + " " + user.lastname}
         </Typography>
@@ -127,7 +128,7 @@ const DashboardSidebar = ({ onMobileClose, openMobile, userInfo }) => {
           color="textSecondary"
           variant="body2"
         >
-          {user.type}
+          {`สถานะ: ${user.type === 'student'? 'นักเรียน':'พนักงาน'}`}
         </Typography>
       </Box>
       <Divider />

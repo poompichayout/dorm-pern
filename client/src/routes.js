@@ -7,7 +7,7 @@ import FreeRoomList from 'src/pages/FreeRoomList';
 import Dashboard from 'src/pages/Dashboard';
 import Login from 'src/pages/Login';
 import NotFound from 'src/pages/NotFound';
-import ProductList from 'src/pages/ProductList';
+import AdminPage from 'src/pages/Admin';
 import Register from 'src/pages/Register';
 import Settings from 'src/pages/Settings';
 import CheckBill from 'src/pages/CheckBill';
@@ -22,7 +22,7 @@ const routes = [
       { path: 'freerooms', element: <FreeRoomList /> },
       { path: 'checkbill', element: <CheckBill /> },
       { path: 'dashboard', element: <Dashboard /> },
-      { path: 'products', element: <ProductList /> },
+      { path: 'admin', element: <AdminPage /> },
       { path: 'request', element: <Settings /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]

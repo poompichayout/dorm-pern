@@ -1,6 +1,21 @@
 const router = require('express').Router();
 const pool = require('../config/db.config');
 
+// แอดมินสามารถดึงข้อมูลคนที่อยู่ในห้องพักนั้นได้
+router.get('/:bname/:roomid', async (req, res) => {
+    try {
+        const { bname, roomid } = req.params;
+
+        const data = await pool.query(`SELECT * FROM Tenant WHERE bname='${bname}' AND roomid=${roomid}`);
+
+        res.json(data.rows);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({message: 'Server Error'});
+    }
+})
+
 // แอดมินสามารถดูข้อมูลผู้ใช้ทั้งหมดได้
 router.get('/getall', async (req, res) => {
     const allUsers = await pool.query('SELECT * FROM tenant;');
@@ -39,6 +54,7 @@ router.get('/getallroom', async (req, res) => {
 
 router.get('/getallroom/:bool', async (req, res) => {
     const {bool} = req.params;
+    console.log('bool:' ,bool)
     const data = await pool.query(`
         SELECT * FROM Room WHERE _status=${bool};
     `);
