@@ -8,6 +8,7 @@ import AccountProfile from 'src/components/account/AccountProfile';
 import AccountProfileDetails from 'src/components/account/AccountProfileDetails';
 import BookRoom from 'src/components/account/BookRoom';
 import UpdateRoom from 'src/components/account/UpdateRoom';
+import ContractView from 'src/components/account/ContractView';
 
 const Account = () => {
   
@@ -39,28 +40,25 @@ const Account = () => {
             <AccountProfileDetails user={user} />
           </Grid>
         </Grid>
+        { /* container ตัวล่าง */ }
         <Grid container spacing={3} mt={3}>
-          <Grid item lg={4} md={6} xs={12}> </Grid>
-          <Grid
-            item
-            lg={8}
-            md={6}
-            xs={12}
-          >
-            <BookRoom user={user} />
+          { /* component ฝั่งซ้าย */ }
+          <Grid item lg={4} md={6} xs={12}>
+            <ContractView user={user} />
           </Grid>
-        </Grid>
 
-        <Grid container spacing={3} mt={3}>
-          <Grid item lg={4} md={6} xs={12}> </Grid>
-          <Grid
-            item
-            lg={8}
-            md={6}
-            xs={12}
-          >
-            <UpdateRoom user={user} />
+          { /* component ฝั่งขวา */ }
+          <Grid item lg={8} md={6} xs={12}> 
+            { /* หน้าจอง */ }
+            <Grid item lg={12} md={12} xs={12}>
+              <BookRoom user={user} />
+            </Grid>
+            { /* หน้าอัพเดต */ }
+            <Grid item lg={12} md={12} xs={12} mt={3}>
+              <UpdateRoom user={user} />
+            </Grid>
           </Grid>
+          
         </Grid>
       </Container>
     </Box>
