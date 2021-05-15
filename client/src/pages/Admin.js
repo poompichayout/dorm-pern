@@ -18,12 +18,13 @@ const AdminPage = () => {
   useEffect(() => {
     if(state) {
       const {people , contracts} = state;
-      if(people)
+      if(people) {
         setPeople(people)
-      if(contracts)
+      }
+      if(contracts) {
         setContract(contracts)
+      }
     }
-    
   }, []);
   
   

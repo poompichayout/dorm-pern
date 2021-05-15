@@ -34,7 +34,7 @@ const Account = () => {
       <Container maxWidth="lg">
         <Grid  container spacing={3}>
           <Grid item lg={4} md={6} xs={12}>
-            <AccountProfile />
+          <ContractView user={user} />
           </Grid>
           <Grid item lg={8} md={6} xs={12}>
             <AccountProfileDetails user={user} />
@@ -44,7 +44,7 @@ const Account = () => {
         <Grid container spacing={3} mt={3}>
           { /* component ฝั่งซ้าย */ }
           <Grid item lg={4} md={6} xs={12}>
-            <ContractView user={user} />
+            
           </Grid>
 
           { /* component ฝั่งขวา */ }

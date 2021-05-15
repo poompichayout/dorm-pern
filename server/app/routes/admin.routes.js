@@ -1,6 +1,44 @@
 const router = require('express').Router();
 const pool = require('../config/db.config');
 
+// แอดมินสามารถปรับราคาห้องพักได้
+router.put('/update/price', async (req, res) => {
+    try {
+        const { bname, roomid, price } = req.body;
+
+        await pool.query(`
+            UPDATE Room
+            SET price=${price}
+            WHERE bname='${bname}' AND roomid=${roomid};
+        `);
+
+        res.json({message: 'Update Price successfully'});
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({message: 'Server Error'});
+    }
+})
+
+// แอดมินสามารถแจ้งรายการชำระเงินได้
+router.post('/addbill', async (req, res) => {
+    try {
+        const { bname, roomid, due_date, costname} = req.body;
+
+        var id = await pool.query('SELECT * FROM Bill ORDER BY billid DESC LIMIT 1;')
+        id = id.rows[0].billid;
+
+        await pool.query(`
+            INSERT INTO Bill
+            VALUES (${id+1}, '${bname}', ${roomid}, CAST('${due_date}' AS date), FALSE, 0, '${costname}');
+        `);
+
+        res.json({message: 'Add bill successfully'});
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({message: 'Server Error'});
+    }
+})
+
 // แอดมินสามารถดึงข้อมูลคนที่อยู่ในห้องพักนั้นได้
 router.get('/:bname/:roomid', async (req, res) => {
     try {

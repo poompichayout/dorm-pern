@@ -80,7 +80,7 @@ const items = [
 const DashboardSidebar = ({ onMobileClose, openMobile, userInfo }) => {
   const location = useLocation();
   const user = {
-    avatar: 'http://web.reg.tu.ac.th/registrar/getstudentimage.asp?id=6209680062&Status=10',
+    avatar: 'https://randomuser.me/api/portraits/men/90.jpg',
     jobTitle: 'โปรแกรมเมอร์เงินแสน',
     ...userInfo
   };
