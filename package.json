@@ -7,19 +7,17 @@
     "npm": "6.14.12"
   },
   "scripts": {
-    "start": "node server/server.js",
-    "build": "cd client/ && npm install && npm run build"
+    "start": "cd server/ && npm start",
+    "build": "cd client/ && npm install && npm run build && cd ../server/ && npm install"
   },
   "cacheDirectories": [
-    "node_modules",
-    "react-ui/node_modules"
+    "server/node_modules",
+    "client/node_modules"
   ],
-  "dependencies": {
-    "express": "^4.17.1"
-  },
+  "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/poompichayout/dorm-pern.git"
+    "url": "git+https://github.com/poompichayout/dorm-pern.git"
   },
   "keywords": [
     "node",
@@ -28,5 +26,11 @@
     "react"
   ],
   "license": "MIT",
-  "devDependencies": {}
+  "devDependencies": {},
+  "bugs": {
+    "url": "https://github.com/poompichayout/dorm-pern/issues"
+  },
+  "homepage": "https://github.com/poompichayout/dorm-pern#readme",
+  "main": "index.js",
+  "author": ""
 }
