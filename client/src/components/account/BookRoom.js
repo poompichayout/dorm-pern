@@ -29,10 +29,8 @@ const states = [
 const AccountProfileDetails = (props) => {
   const user = props.user;
   const [values, setValues] = useState({
-    firstname: user.firstname,
-    lastname: user.lastname,
-    phone: user.phoneNumber? user.phoneNumber:null,
-    gender: user.sex
+    bname: user.bname,
+    roomid: user.roomid
   });
 
   
@@ -47,18 +45,15 @@ const AccountProfileDetails = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    console.log(user);
-
-    axios.put(`http://localhost:8080/api/user/update/${user.ssn}`, {
-      params: {...values}
+    axios.post(`http://localhost:8080/api/user/booking_room`, {
+      ...values,
+      ssn: user.ssn
     }).then( res => {
       alert(res.data.message);
       localStorage.setItem('user', JSON.stringify({
         ...user,
-        firstname: values.firstname,
-        lastname: values.lastname,
-        sex: values.gender,
-        phoneNumber: values.phone
+        bname: values.bname,
+        roomid: values.roomid
       }))
     }).catch(err => {
       console.error(err.message);
@@ -74,8 +69,8 @@ const AccountProfileDetails = (props) => {
     >
       <Card>
         <CardHeader
-          subheader="สามารถแก้ไขข้อมูลพื้นฐานได้ที่นี่"
-          title="ข้อมูลส่วนตัว"
+          subheader="เพิ่มข้อมูลการจองห้องพัก"
+          title="จองห้องพัก"
         />
         <Divider />
         <CardContent>
@@ -90,13 +85,14 @@ const AccountProfileDetails = (props) => {
             >
               <TextField
                 fullWidth
-                helperText="ระบุชื่อจริง"
-                label="ชื่อจริง"
-                name="firstname"
+                helperText="ระบุชื่อห้อง"
+                label="ระบุตึก"
+                name="bname"
                 onChange={handleChange}
                 required
-                value={values.firstname}
+                value={values.bname}
                 variant="outlined"
+                disabled={user.bname && user.roomid}
               />
             </Grid>
             <Grid
@@ -106,54 +102,14 @@ const AccountProfileDetails = (props) => {
             >
               <TextField
                 fullWidth
-                label="นามสกุล"
-                name="lastname"
+                label="ระบุห้อง"
+                name="roomid"
                 onChange={handleChange}
                 required
-                value={values.lastname}
+                value={values.roomid}
                 variant="outlined"
+                disabled={user.bname && user.roomid}
               />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="เบอร์โทรศัพท์"
-                name="phone"
-                onChange={handleChange}
-                type="number"
-                value={values.phone}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="เพศ"
-                name="gender"
-                onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.gender}
-                variant="outlined"
-              >
-                {states.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
             </Grid>
           </Grid>
         </CardContent>
@@ -169,8 +125,9 @@ const AccountProfileDetails = (props) => {
             color="primary"
             variant="contained"
             type="submit"
+            disabled={user.bname && user.roomid}
           >
-            บันทึกข้อมูล
+            จองห้องพัก
           </Button>
         </Box>
       </Card>

@@ -6,11 +6,21 @@ import {
 } from '@material-ui/core';
 import AccountProfile from 'src/components/account/AccountProfile';
 import AccountProfileDetails from 'src/components/account/AccountProfileDetails';
+import BookRoom from 'src/components/account/BookRoom';
 
-const Account = () => (
+const Account = () => {
+  
+  var user = localStorage.getItem('user');
+  try {
+    user = JSON.parse(user);
+  } catch(err) {
+    console.error(err.message);
+  }
+  
+  return (
   <>
     <Helmet>
-      <title>Account | Material Kit</title>
+      <title>ข้อมูลส่วนตัวสุดเจ๋ง</title>
     </Helmet>
     <Box
       sx={{
@@ -38,12 +48,33 @@ const Account = () => (
             md={6}
             xs={12}
           >
-            <AccountProfileDetails />
+            <AccountProfileDetails user={user} />
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          spacing={3}
+          mt={3}
+        >
+          <Grid
+            item
+            lg={4}
+            md={6}
+            xs={12}
+          >
+          </Grid>
+          <Grid
+            item
+            lg={8}
+            md={6}
+            xs={12}
+          >
+            <BookRoom user={user} />
           </Grid>
         </Grid>
       </Container>
     </Box>
   </>
-);
+)};
 
 export default Account;

@@ -18,7 +18,8 @@ import {
   UserPlus as UserPlusIcon,
   Users as UsersIcon,
   CreditCard as CreditCardIcon,
-  DollarSign as DollarSignIcon
+  DollarSign as DollarSignIcon,
+  Mail as MailIcon
 } from 'react-feather';
 import NavItem from './NavItem';
 
@@ -61,7 +62,7 @@ const items = [
   },
   {
     href: '/app/request',
-    icon: DollarSignIcon,
+    icon: MailIcon,
     title: 'แจ้งความประสงค์'
   },
   {

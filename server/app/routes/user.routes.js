@@ -4,14 +4,20 @@ const pool = require('../config/db.config');
 // ผู้ใช้สามารถอัพเดตข้อมูลได้
 router.put('/update/:id', async (req, res) => {
 
-    const data = req.body;
-    const {id} = req.params;
+    try {
+        const {firstname, lastname, phone, gender} = req.body.params;
+        const {id} = req.params;
 
-    const newUser = await pool.query(`UPDATE Tenant 
-        SET type=$1
-        WHERE SSN=$2;`, [data.type, id]);
+        const newUser = await pool.query(`UPDATE Tenant 
+            SET firstname='${firstname}', lastname='${lastname}', phoneNumber=${phone}, sex='${gender}'
+            WHERE SSN=${id};`);
 
-    res.send({message: "Successful Update!"});
+        res.json({message: "Successful Update!"});
+    
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({message: 'Server Error'});
+    } 
 });
 
 // ผู้ใช้สามารถเรียกเอาข้อมูลห้องที่ว่างออกมาได้
@@ -85,41 +91,56 @@ router.post('/request', async (req, res) => {
 
 // ผู้ใช้สามารถจองห้องพักได้
 router.post('/booking_room', async (req, res) => {
-    const {
-        BName, RoomId, SSN, start_date, end_date, price, deposit, status
-    } = req.body;
-
     try {
-        const room = await pool.query(`SELECT * FROM Room WHERE BName=${BName} AND RoomId=${RoomId}`);
+        const { bname, roomid, ssn } = req.body;
+        const room = await pool.query(`SELECT * FROM Room WHERE BName='${bname}' AND RoomId=${roomid}`);
 
         if(room.rows.length === 0)
-            return res.sendStatus(500).send({message: 'Room Not Found!'});
+            return res.status(200).send({message: 'Building Or Room Not Found!'});
+
+        let lastContractIndex = await pool.query(`SELECT * FROM Contract ORDER BY contractno DESC LIMIT 1;`)
+        lastContractIndex = lastContractIndex.rows[0].contractno;
+        const { price } = room.rows[0];
 
         const contract = await pool.query(`
             INSERT INTO Contract VALUES (
-                ${BName}, ${RoomId}, ${SSN}, ${start_date}, 
-                ${end_date}, ${price}, ${deposit}, ${status}
+                ${lastContractIndex+1}, '${bname}', ${roomid}, ${ssn}, NOW(), 
+                (NOW()+ interval '30 day'), ${price}, 300, TRUE
             );
 
-            UPDATE Tenant SET BName=${BName}, RoomId=${RoomId}
-            WHERE SSN=${SSN};
+            UPDATE Tenant SET BName='${bname}', RoomId=${roomid}
+            WHERE SSN=${ssn};
 
-            UPDATE Room SET status=(
+            UPDATE Room SET _status=(
                 CASE
                     WHEN (SELECT COUNT(Tenant.SSN)
                             FROM Tenant
-                            WHERE Tenant.BName=${BName}
-                            AND Tenant.RoomId=${RoomId})
+                            WHERE Tenant.BName='${bname}'
+                            AND Tenant.RoomId=${roomid})
                     >= Room._roomer
                     THEN FALSE
                     ELSE TRUE
                 END)
-            WHERE Room.BName=${BName} AND Room.RoomId=${RoomId};
+            WHERE Room.BName='${bname}' AND Room.RoomId=${roomid};
         `);
+
+        res.json({message: 'Booking Successful'})
     } catch (error) {
-        return res.sendStatus(500).send({message: error.message});
+        console.error(error.message)
+        res.status(500).json({message: error.message});
     }
 });
+
+// ผู้ใช้สามารถเปลี่ยนห้องพักได้
+
+
+// ผู้ใช้สามารถยกเลิกห้องพักได้
+
+
+// ผู้ใช้สามารถเลือกผู้อาศัยร่วมได้
+
+
+// ผู้ใช้สามารถตรวจสอบรายละเอียดของสัญญาตัวเองได้
 
 
 module.exports = router;

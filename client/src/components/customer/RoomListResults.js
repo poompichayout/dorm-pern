@@ -4,7 +4,6 @@ import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
-  Avatar,
   Box,
   Card,
   Checkbox,
@@ -13,10 +12,8 @@ import {
   TableCell,
   TableHead,
   TablePagination,
-  TableRow,
-  Typography
+  TableRow
 } from '@material-ui/core';
-import getInitials from 'src/utils/getInitials';
 
 const RoomListResults = ({ customers, ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
