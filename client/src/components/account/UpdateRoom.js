@@ -25,16 +25,19 @@ const UpdateRoom = (props) => {
     });
   };
 
-  const onCancelSubmit = () => {
-    axios.post(`http://localhost:8080/api/user/booking_room`, {
-      ...values,
+  const onCancelSubmit = (e) => {
+    e.preventDefault();
+    console.log('click');
+    axios.put(`http://localhost:8080/api/user/cancel/room`, {
+      bname: values.bname,
+      roomid: values.roomid,
       ssn: user.ssn
     }).then( res => {
       alert(res.data.message);
       localStorage.setItem('user', JSON.stringify({
         ...user,
-        bname: values.bname,
-        roomid: values.roomid
+        bname: null,
+        roomid: null
       }))
     }).catch(err => {
       console.error(err.message);
@@ -95,6 +98,7 @@ const UpdateRoom = (props) => {
                 required
                 value={values.bname}
                 variant="outlined"
+                disabled={!user.bname}
               />
             </Grid>
             <Grid
@@ -110,6 +114,7 @@ const UpdateRoom = (props) => {
                 required
                 value={values.roomid}
                 variant="outlined"
+                disabled={!user.roomid}
               />
             </Grid>
           </Grid>
@@ -126,10 +131,9 @@ const UpdateRoom = (props) => {
           <Button
             color="secondary"
             variant="contained"
-            type="submit"
             name="cancel"
             onClick={onCancelSubmit}
-            disabled={user.bname !== values.bname || user.roomid !== values.roomid}
+            disabled={user.bname !== values.bname || user.roomid !== values.roomid || (!user.bname && !user.roomid)}
           >
             ยกเลิกห้องพัก
           </Button>

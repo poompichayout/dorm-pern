@@ -166,7 +166,7 @@ router.put('/cancel/room', async (req, res) => {
         await pool.query(`
             UPDATE Contract
             SET end_date=NOW(), status=FALSE
-            WHERE bname=${bname} AND roomid=${roomid} AND ssn=${ssn};
+            WHERE BName='${bname}' AND roomid=${roomid} AND ssn=${ssn};
 
             UPDATE Tenant
             SET bname=NULL, RoomId=NULL
