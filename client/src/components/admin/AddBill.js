@@ -4,15 +4,13 @@ import {
   Card,
   CardContent,
   TextField,
-  InputAdornment,
-  SvgIcon,
   Typography,
   Grid
 } from '@material-ui/core';
 import axios from 'axios';
 import { useState } from 'react';
-import { Search as SearchIcon } from 'react-feather';
 import { useNavigate } from 'react-router';
+import url from 'src/utils/developURL';
 
 const AddBill = (props) => {
   const navigate = useNavigate();
@@ -32,7 +30,7 @@ const AddBill = (props) => {
   
   const onSubmit = (e) => {
     e.preventDefault();
-    axios.post(`/api/admin/addbill`, bill)
+    axios.post(url + `/api/admin/addbill`, bill)
     .then(res => {
       alert(res.data.message);
     }).catch(err => {

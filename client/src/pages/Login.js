@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import axios from 'axios';
+import url from 'src/utils/developURL';
 import {
   Box,
   Button,
@@ -25,7 +26,7 @@ const Login = () => {
       password
     }
 
-    axios.post('/api/auth/login', userInfo)
+    axios.post(url + '/api/auth/login', userInfo)
     .then(res => {
       const user = res.data.userInfo;
       alert(res.data.message);

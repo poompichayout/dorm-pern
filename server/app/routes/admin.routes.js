@@ -86,13 +86,11 @@ router.get('/getallroom', async (req, res) => {
         SELECT * FROM Room;
     `);
 
-    console.log('Fetch room data');
     res.send(data.rows);
 })
 
-router.get('/getallroom/:bool', async (req, res) => {
-    const {bool} = req.params;
-    console.log('bool:' ,bool)
+router.get('/room', async (req, res) => {
+    const { bool } = req.query;
     const data = await pool.query(`
         SELECT * FROM Room WHERE _status=${bool};
     `);

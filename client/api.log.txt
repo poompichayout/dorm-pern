@@ -1,0 +1,18 @@
+หน้าที่มีการยิง api
+
+components/request.js
+
+components/account/bookroom.js
+components/account/contractview.js
+components/account/updateroom.js
+
+components/admin/addbill.js
+components/admin/admintoolbar.js
+components/admin/roomadmin.js
+
+components/card/billcard.js
+
+components/pages/freeroomlist.js
+components/pages/login.js
+components/pages/register.js
+components/pages/roomlist.js

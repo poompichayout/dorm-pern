@@ -3,13 +3,14 @@ import { Box, Container } from '@material-ui/core';
 import RoomListResults from 'src/components/customer/RoomListResults';
 import {useState, useEffect } from 'react';
 import axios from 'axios';
+import url from 'src/utils/developURL';
 
 const RoomList = () => {
 
   const [customers, setCustomers] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/admin/getallroom/true')
+    axios.get(url + '/api/admin/getallroom/true')
       .then(res => res.data)
       .then(data => {
         console.log(data)

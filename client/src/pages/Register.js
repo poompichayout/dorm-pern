@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import axios from 'axios';
+import url from 'src/utils/developURL';
 import {
   Box,
   Button,
@@ -34,7 +35,7 @@ const Register = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(registerForm);
-    axios.post('/api/auth/register', registerForm)
+    axios.post(url + '/api/auth/register', registerForm)
     .then(res => {
       alert(res.data.message);
       navigate('/login', { replace: true });

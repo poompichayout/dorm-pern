@@ -11,6 +11,7 @@ import {
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import url from 'src/utils/developURL';
 
 const RoomAdmin = (props) => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const RoomAdmin = (props) => {
 
   const onRoomDataSubmit = (e) => {
     e.preventDefault();
-    axios.put(`/api/admin/update/price`, room)
+    axios.put(url + `/api/admin/update/price`, room)
     .then(res => {
       alert(res.data.message);
     }).catch(err => {

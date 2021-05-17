@@ -5,10 +5,10 @@ import {
   CardHeader,
   Divider,
   Grid,
-  TextField,
   Typography
 } from '@material-ui/core';
 import axios from 'axios';
+import url from 'src/utils/developURL';
 
 const ContractView = (props) => {
   const user = props.user;
@@ -22,7 +22,7 @@ const ContractView = (props) => {
   };
 
   useEffect(() => {
-    axios.get(`/api/user/contract/${user.ssn}`)
+    axios.get(url + `/api/user/contract/${user.ssn}`)
     .then(res => {
       setContract(res.data);
     }).catch(err => {

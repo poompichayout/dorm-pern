@@ -15,6 +15,7 @@ import {
   TableHead,
   TableRow,
 } from '@material-ui/core';
+import url from 'src/utils/developURL';
 
 const BillCard = (props) => {
   const [billData, setBillData] = useState([]);
@@ -27,7 +28,7 @@ const BillCard = (props) => {
   }
 
   const getData = () => {
-    axios.get('/api/user/checkbill', {
+    axios.get(url + '/api/user/checkbill', {
         params: {bname: user.bname, roomid: user.roomid}
     })
     .then(res => {

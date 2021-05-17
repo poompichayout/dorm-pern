@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { Search as SearchIcon } from 'react-feather';
 import { useNavigate } from 'react-router';
+import url from 'src/utils/developURL';
 
 const AdminToolbar = (props) => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const AdminToolbar = (props) => {
   
   const onContractSubmit = (e) => {
     e.preventDefault();
-    axios.get(`/api/user/contract/${ssn}`)
+    axios.get(url + `/api/user/contract/${ssn}`)
     .then(res => {
       console.log('contracts: ',res.data);
       navigate('/app/admin', { state: { contracts: res.data}});
@@ -46,7 +47,7 @@ const AdminToolbar = (props) => {
 
   const onRoomDataSubmit = (e) => {
     e.preventDefault();
-    axios.get(`/api/admin/${room.bname}/${room.roomid}`)
+    axios.get(url + `/api/admin/${room.bname}/${room.roomid}`)
     .then(res => {
       console.log('room data: ',res.data);
       navigate('/app/admin', { state: { people: res.data}});

@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
+import url from 'src/utils/developURL';
 
 const Request = (props) => {
   const [detail, setDetail] = useState('');
@@ -32,7 +33,7 @@ const Request = (props) => {
       ssn: user.ssn,
       detail: detail
     }
-    axios.post('/api/user/request', data)
+    axios.post(url + '/api/user/request', data)
     .then(res => {
       alert(res.data.message);
     })

@@ -10,6 +10,7 @@ import {
   TextField
 } from '@material-ui/core';
 import axios from 'axios';
+import url from 'src/utils/developURL';
 
 const states = [
   {
@@ -49,7 +50,7 @@ const AccountProfileDetails = (props) => {
 
     console.log(user);
 
-    axios.put(`/api/user/update/account/${user.ssn}`, {
+    axios.put(url + `/api/user/update/account/${user.ssn}`, {
       params: {...values}
     }).then( res => {
       alert(res.data.message);

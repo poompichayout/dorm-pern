@@ -10,6 +10,7 @@ import {
   TextField
 } from '@material-ui/core';
 import axios from 'axios';
+import url from 'src/utils/developURL';
 
 const BookRoom = (props) => {
   const user = props.user;
@@ -30,7 +31,7 @@ const BookRoom = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    axios.post(`/api/user/booking_room`, {
+    axios.post(url + `/api/user/booking_room`, {
       ...values,
       ssn: user.ssn
     }).then( res => {

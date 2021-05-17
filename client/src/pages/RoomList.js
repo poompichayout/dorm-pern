@@ -4,13 +4,14 @@ import RoomListResults from 'src/components/customer/RoomListResults';
 // import customers2 from 'src/__mocks__/customers';
 import {useState, useEffect } from 'react';
 import axios from 'axios';
+import url from 'src/utils/developURL';
 
 const RoomList = () => {
 
   const [customers, setCustomers] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/admin/getallroom')
+    axios.get(url + '/api/admin/getallroom')
       .then(res => res.data)
       .then(data => {
         console.log(data)
