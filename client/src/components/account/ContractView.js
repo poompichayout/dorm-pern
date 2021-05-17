@@ -4,21 +4,33 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  Button,
   Grid,
-  Typography
+  Typography,
+  MenuItem,
+  Menu
 } from '@material-ui/core';
+import { ChevronDown } from 'react-feather'
 import axios from 'axios';
 import url from 'src/utils/developURL';
 
 const ContractView = (props) => {
-  const [contract, setContract] = useState([]);
+  const [contracts, setContracts] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  }
 
   useEffect(() => {
     let getContract = async () => {
       axios.get(url() + `/api/user/contract/${props.user.ssn}`)
       .then(res => {
-        setContract(res.data);
-        console.log(contract);
+        setContracts(res.data);
       })
       .catch(err => {
         console.error(err.message);
@@ -29,11 +41,6 @@ const ContractView = (props) => {
   }, []);
 
   return (
-    <form
-      autoComplete="off"
-      noValidate
-      {...props}
-    >
       <Card>
         <CardHeader
           subheader="รายละเอียด"
@@ -42,34 +49,49 @@ const ContractView = (props) => {
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
-            <Grid item md={6} xs={12}>
+            <Grid item md={12} xs={12}>
             <Typography color="textSecondary" gutterBottom>
-              {`You have ${contract.length} Contract`}
+              {`You have ${contracts.length} Contracts. ${contracts.filter((contract) => contract.status).length} Active.`}
             </Typography>
-            </Grid>
-            <Grid item md={6} xs={12}>
             </Grid>
           </Grid>
         </CardContent>
         <Divider />
-        {/* <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            p: 2
-          }}
-        >
-          <Button
-            color="primary"
-            variant="contained"
-            type="submit"
-            disabled={user.bname && user.roomid}
-          >
-            จองห้องพัก
-          </Button>
-        </Box> */}
+        {contracts.filter((contract) => contract.status).map((contract, index) => {
+          return ( <>
+              <Card>
+                <CardContent>
+                  <Grid container spacing={3}>
+                    <Grid item md={12} xs={12}>
+                      <Typography color="textSecondary" gutterBottom variant="subtitle1">
+                      {`สัญญาหมายเลข ${('0000'+contract.contractno).slice(-4)}`}
+                      </Typography>
+                      <Typography color="textSecondary" gutterBottom variant="body1">
+                        {`   ตึก: ${contract.bname}`}
+                      </Typography>
+                      <Typography color="textSecondary" gutterBottom variant="body1">
+                        {`   หมายเลขห้อง: ${contract.roomid}`}
+                      </Typography>
+                      <Typography color="textSecondary" gutterBottom variant="body1">
+                        {`   วันที่เริ่มสัญญา: ${contract.start_date}`}
+                      </Typography>
+                      <Typography color="textSecondary" gutterBottom variant="body1">
+                        {`   วันสิ้นสุดสัญญา: ${contract.end_date}`}
+                      </Typography>
+                      <Typography color="textSecondary" gutterBottom variant="body1">
+                        {`   ค่าเช่ารายเดือน: ${contract.rent} บาท`}
+                      </Typography>
+                      <Typography color="textSecondary" gutterBottom variant="body1">
+                        {`   เงินประกัน: ${contract.deposit} บาท`}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
+              </>
+        )}).slice(-2)}
+        
       </Card>
-    </form>
   );
 };
 

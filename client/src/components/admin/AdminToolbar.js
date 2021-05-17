@@ -39,7 +39,7 @@ const AdminToolbar = (props) => {
     axios.get(url() + `/api/user/contract/${ssn}`)
     .then(res => {
       console.log('contracts: ',res.data);
-      navigate('/app/admin', { state: { contracts: res.data}});
+      navigate('/app/admin', { state: { contracts: res.data}}); 
     }).catch(err => {
       console.error(err.message);
     })

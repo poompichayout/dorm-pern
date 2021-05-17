@@ -14,6 +14,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Typography
 } from '@material-ui/core';
 import url from 'src/utils/developURL';
 
@@ -47,6 +48,9 @@ const BillCard = (props) => {
           subheader={`ตึก ${user.bname} ห้อง ${user.roomid}`}
           title="รายการค่าใช้จ่าย"
         />
+        <Typography color="textSecondary" gutterBottom variant="body1" align="center">
+          {`รายการค้างชำระ ${billData.filter((bill) => !bill.status).length} รายการ`}
+        </Typography>
         <Divider />
         <CardContent>
         <PerfectScrollbar>

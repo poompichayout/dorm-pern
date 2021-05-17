@@ -4,7 +4,8 @@ import {
   Box,
   Container,
   Grid,
-  Divider
+  Divider,
+  Typography
 } from '@material-ui/core';
 import axios from 'axios';
 import url from 'src/utils/developURL';
@@ -44,7 +45,11 @@ const Account = () => {
       }}
     >
       <Container maxWidth="lg">
+        <Typography variant="h3" component="h2" mb={3}>
+          ข้อมูลส่วนตัว
+        </Typography>
         <Grid  container spacing={3} mb={2}>
+        
           <Grid item lg={4} md={6} xs={12}>
           <ContractView user={user} />
           </Grid>
@@ -54,7 +59,10 @@ const Account = () => {
         </Grid>
         <Divider/>
         { /* container ตัวล่าง */ }
-        <Grid container spacing={3} mt={1}>
+        <Typography variant="h3" component="h2" mb={3} mt={3}>
+          จัดการห้องพัก
+        </Typography>
+        <Grid container spacing={3}>
           { /* component ฝั่งซ้าย */ }
           <Grid item lg={4} md={6} xs={12}>
             

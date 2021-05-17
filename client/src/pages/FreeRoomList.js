@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet';
-import { Box, Container } from '@material-ui/core';
+import { Box, Container, Typography } from '@material-ui/core';
 import RoomListResults from 'src/components/customer/RoomListResults';
 import {useState, useEffect } from 'react';
 import axios from 'axios';
@@ -34,6 +34,9 @@ const RoomList = () => {
         <Container maxWidth={false}>
           {/*<CustomerListToolbar />*/}
           <Box sx={{ pt: 3 }}>
+            <Typography color="textSecondary" gutterBottom variant="h5" align="left" mb={2}>
+              {`จำนวนห้องว่าง ${customers.length} ห้อง`}
+            </Typography>
             <RoomListResults customers={customers} />
           </Box>
         </Container>
