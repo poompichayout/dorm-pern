@@ -15,4 +15,4 @@ components/card/billcard.js
 components/pages/freeroomlist.js
 components/pages/login.js
 components/pages/register.js
-components/pages/roomlist.js
+components/pages/roomlist.js 
