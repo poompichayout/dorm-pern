@@ -72,7 +72,7 @@ const BillCard = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {billData.slice(0, billData.length).map((data, index) => (
+              {billData.map((data, index) => (
                 <TableRow
                   hover
                   key={index}

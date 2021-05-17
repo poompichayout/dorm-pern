@@ -90,9 +90,9 @@ router.get('/getallroom', async (req, res) => {
 })
 
 router.get('/room', async (req, res) => {
-    const { bool } = req.query;
+    const { status } = req.query;
     const data = await pool.query(`
-        SELECT * FROM Room WHERE _status=${bool};
+        SELECT * FROM Room WHERE _status=${status};
     `);
 
     res.send(data.rows);
