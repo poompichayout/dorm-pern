@@ -2,20 +2,30 @@ import { Helmet } from 'react-helmet';
 import {
   Box,
   Container,
-  Grid,
 } from '@material-ui/core';
 import AdminToolbar from 'src/components/admin/AdminToolbar';
 import AddBill from 'src/components/admin/AddBill';
 import { useLocation } from 'react-router';
 import { useState, useEffect } from 'react';
 import RoomAdmin from 'src/components/admin/RoomAdmin';
+import PaymentCard from 'src/components/card/PaymentCard';
+import axios from 'axios';
+import url from 'src/utils/developURL';
 
 const AdminPage = () => {
   const { state } = useLocation();
   const [contract, setContract] = useState([]);
   const [people, setPeople] = useState([]);
+  const [payments, setPayments] = useState([]);
 
   useEffect(() => {
+
+    axios.get(url() + '/api/admin/payment')
+    .then(res => {
+      setPayments(res.data);
+    })
+    .catch(err => console.error(err.message));
+
     if(state) {
       const {people , contracts} = state;
       if(people) {
@@ -43,13 +53,6 @@ const AdminPage = () => {
     >
       <Container maxWidth={false}>
         <AdminToolbar />
-        <Box sx={{ pt: 3 }}>
-            {
-              people.map((person, index) => {
-                  return person.firstname
-              })
-            }
-        </Box>
       </Container>
 
       <Container maxWidth={false}>
@@ -58,6 +61,12 @@ const AdminPage = () => {
 
       <Container maxWidth={false}>
         <RoomAdmin />
+      </Container>
+      
+      <Container maxWidth={false}>
+        <Box sx={{ pt: 3 }}>
+        <PaymentCard payments={payments} />
+        </Box>
       </Container>
     </Box>
 

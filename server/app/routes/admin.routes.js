@@ -100,4 +100,22 @@ router.get('/room', async (req, res) => {
     res.send(data.rows);
 })
 
+// แอดมินสามารถตรวจสอบการชำระเงินของสมาชิกทุกคนได้
+router.get('/payment', async (req, res) => {
+    try {
+        
+        const data = await pool.query(`
+            SELECT Bill.BillID,Bill.bname, Bill.roomid , Payment.PaymentID, Bill.costName, Bill.due_date,Payment.pay_date,
+            Payment.cost, Bill.fine, Payment.status, Payment.paidType
+            FROM Bill
+            LEFT JOIN Payment ON Bill.BillID = Payment.BillID;
+        `);
+
+        res.json(data.rows);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({message: 'Server Error'});
+    }
+})
+
 module.exports = router;

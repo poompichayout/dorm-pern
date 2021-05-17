@@ -18,7 +18,6 @@ import {
   UserPlus as UserPlusIcon,
   Users as UsersIcon,
   CreditCard as CreditCardIcon,
-  DollarSign as DollarSignIcon,
   Mail as MailIcon
 } from 'react-feather';
 import NavItem from './NavItem';

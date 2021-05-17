@@ -33,8 +33,8 @@ const Login = () => {
       localStorage.setItem('user', JSON.stringify(user));
       navigate('/app/dashboard', { replace: true });
     })
-    .catch(err => {
-      console.error(err.message);
+    .catch((err) => {
+      alert(err.message);
     })
   }
 

@@ -52,8 +52,7 @@ router.post('/login', async (req, res) => {
         const student = await pool.query(`SELECT * FROM Student WHERE studentid=${username} AND ssn=${password}`);
         const staff = await pool.query(`SELECT * FROM Staff WHERE staffid=${username} AND ssn=${password}`);
         if(student.rows.length === 0 && staff.rows.length === 0) {
-            console.log('Invalid Username');
-            return res.sendStatus(401).send('Invalid Username or password is incorrect');
+            return res.status(401).send('Invalid Username or password is incorrect');
         }
         
         // const user = student.rows.length === 0? staff:student;

@@ -15,7 +15,7 @@ import {
   TableRow
 } from '@material-ui/core';
 
-const RoomListResults = ({ customers, ...rest }) => {
+const PaymentCard = ({ payments, ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
@@ -24,7 +24,7 @@ const RoomListResults = ({ customers, ...rest }) => {
     let newSelectedCustomerIds;
 
     if (event.target.checked) {
-      newSelectedCustomerIds = customers.map((customer, index) => index);
+      newSelectedCustomerIds = payments.map((payment, index) => index);
     } else {
       newSelectedCustomerIds = [];
     }
@@ -61,7 +61,7 @@ const RoomListResults = ({ customers, ...rest }) => {
   };
 
   return (
-    <Card {...rest}>
+    <Card {...rest} mt={3}>
       <PerfectScrollbar>
         <Box sx={{ minWidth: 1050 }}>
           <Table>
@@ -69,78 +69,84 @@ const RoomListResults = ({ customers, ...rest }) => {
               <TableRow>
                 <TableCell padding="checkbox">
                   <Checkbox
-                    checked={selectedCustomerIds.length === customers.length}
+                    checked={selectedCustomerIds.length === payments.length}
                     color="primary"
                     indeterminate={
                       selectedCustomerIds.length > 0
-                      && selectedCustomerIds.length < customers.length
+                      && selectedCustomerIds.length < payments.length
                     }
                     onChange={handleSelectAll}
                   />
                 </TableCell>
                 <TableCell>
-                  ตึก
+                  รหัสใบเสร็จ
                 </TableCell>
                 <TableCell>
-                  ห้อง
+                  ตึก/เลขที่ห้อง
                 </TableCell>
                 <TableCell>
-                  จำนวนห้องน้ำ
+                  ชื่อรายการค่าใช้จ่าย
                 </TableCell>
                 <TableCell>
-                  จำนวนห้องนอน
+                  วันที่ชำระเงิน
                 </TableCell>
                 <TableCell>
-                  ความจุคน
+                  จำนวนเงิน
+                </TableCell>
+                <TableCell>
+                  ค่าปรับ
                 </TableCell>
                 <TableCell>
                   สถานะ
                 </TableCell>
                 <TableCell>
-                  ราคาห้องต่อเทอม
+                ช่องทางการชำระเงิน
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {customers.slice(page * limit, page * limit + limit).map((customer) => (
+              {payments.slice(page * limit, page * limit + limit).map((payment) => (
                 <TableRow
                   hover
-                  key={customer.roomid}
-                  selected={selectedCustomerIds.indexOf(customer.roomid) !== -1}
+                  key={payment.billid}
+                  selected={selectedCustomerIds.indexOf(payment.billid) !== -1}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selectedCustomerIds.indexOf(customer.roomid) !== -1}
-                      onChange={(event) => handleSelectOne(event, customer.roomid)}
+                      checked={selectedCustomerIds.indexOf(payment.billid) !== -1}
+                      onChange={(event) => handleSelectOne(event, payment.billid)}
                       value="true"
                     />
                   </TableCell>
                   <TableCell>
-                    {customer.bname}
+                    {payment.billid}
                   </TableCell>
                   <TableCell>
-                    {customer.roomid}
+                    {payment.bname + ' / ' + payment.roomid}
                   </TableCell>
                   <TableCell>
-                    {customer._wc}
+                    {payment.costname}
                   </TableCell>
                   <TableCell>
-                    {customer._bedroom}
+                    {payment.pay_date? payment.pay_date: 'ค้างชำระ'}
                   </TableCell>
                   <TableCell>
-                    {customer._roomer}
-                  </TableCell>
-                  <TableCell>
-                    {customer._status? 
-                      <CheckCircleRoundedIcon style={{color: 'green'}} />:
-                      <RemoveCircleRoundedIcon style={{color: 'red'}} />
-                    }
-                  </TableCell>
-                  <TableCell>
-                    {`${customer.price.toLocaleString('en-US', {
+                    {`${payment.cost? payment.cost.toLocaleString('en-US', {
                       style: 'currency',
                       currency: 'THB'
-                    })}`}
+                    }): ''} `}
+                  </TableCell>
+                  <TableCell>
+                    {`${payment.fine? payment.fine.toLocaleString('en-US', {
+                      style: 'currency',
+                      currency: 'THB'
+                    }): ''}`}
+                  </TableCell>
+                  <TableCell>
+                    {payment.status? 'จ่ายแล้ว':'ค้างชำระ'}
+                  </TableCell>
+                  <TableCell>
+                    {payment.paidType? (payment.paidType === 'bank_payment'? 'ธนาคาร':'บัตรเครดิต'): ''}
                   </TableCell>
                 </TableRow>
               ))}
@@ -150,19 +156,19 @@ const RoomListResults = ({ customers, ...rest }) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={customers.length}
+        count={payments.length}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleLimitChange}
         page={page}
         rowsPerPage={limit}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[5, 10, 20]}
       />
     </Card>
   );
 };
 
-RoomListResults.propTypes = {
-  customers: PropTypes.array.isRequired
+PaymentCard.propTypes = {
+  payments: PropTypes.array.isRequired
 };
 
-export default RoomListResults;
+export default PaymentCard;
