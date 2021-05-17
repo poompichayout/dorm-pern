@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -36,7 +36,20 @@ const AccountProfileDetails = (props) => {
     gender: user.sex
   });
 
-  
+  const [address, setAddress] = useState({
+    ssn: null,
+    hno: '',
+    district: '',
+    province: '',
+    zipcode: ''
+  });
+
+  useEffect(() => {
+    let temp = JSON.parse(localStorage.getItem('address'));
+    if(temp != null) {
+      setAddress(temp);
+    }
+  }, [])
 
   const handleChange = (event) => {
     setValues({
@@ -45,13 +58,18 @@ const AccountProfileDetails = (props) => {
     });
   };
 
-  const onSubmit = (e) => {
+  const handleAddressChange = (event) => {
+    setAddress({
+      ...address,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  const onAccountSubmit = (e) => {
     e.preventDefault();
 
-    console.log(user);
-
     axios.put(url() + `/api/user/update/account/${user.ssn}`, {
-      params: {...values}
+      ...values
     }).then( res => {
       alert(res.data.message);
       localStorage.setItem('user', JSON.stringify({
@@ -66,29 +84,34 @@ const AccountProfileDetails = (props) => {
     })
   }
 
+  const onAddressSubmit = (e) => {
+    e.preventDefault();
+
+    axios.post(url() + `/api/user/address/?ssn=${user.ssn}`, {
+      ...address
+    }).then( res => {
+      alert(res.data.message);
+    }).catch(err => {
+      console.error(err.message);
+    })
+  }
+
   return (
-    <form
-      autoComplete="off"
-      noValidate
-      {...props}
-      onSubmit={onSubmit}
-    >
       <Card>
+        <form
+          autoComplete="off"
+          noValidate
+          {...props}
+          onSubmit={onAccountSubmit}
+        >
         <CardHeader
           subheader="สามารถแก้ไขข้อมูลพื้นฐานได้ที่นี่"
           title="ข้อมูลส่วนตัว"
         />
         <Divider />
         <CardContent>
-          <Grid
-            container
-            spacing={3}
-          >
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+          <Grid container spacing={3}>
+            <Grid item  md={6} xs={12}>
               <TextField
                 fullWidth
                 helperText="ระบุชื่อจริง"
@@ -100,11 +123,7 @@ const AccountProfileDetails = (props) => {
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="นามสกุล"
@@ -115,11 +134,7 @@ const AccountProfileDetails = (props) => {
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="เบอร์โทรศัพท์"
@@ -130,11 +145,7 @@ const AccountProfileDetails = (props) => {
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="เพศ"
@@ -174,8 +185,87 @@ const AccountProfileDetails = (props) => {
             บันทึกข้อมูล
           </Button>
         </Box>
+        </form>
+        <Divider />
+        <form
+          autoComplete="off"
+          noValidate
+          {...props}
+          onSubmit={onAddressSubmit}
+        >
+        <CardHeader
+          subheader="สามารถแก้ไขข้อมูลที่อยู่ได้ที่นี่"
+          title="ข้อมูลที่อยู่"
+        />
+        <Divider />
+        <CardContent>
+        <Grid container spacing={3}>
+            <Grid item  md={6} xs={12}>
+              <TextField
+                fullWidth
+                label="ที่อยู่"
+                name="hno"
+                onChange={handleAddressChange}
+                required
+                value={address.hno}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                label="อำเภอ/เขต"
+                name="district"
+                onChange={handleAddressChange}
+                required
+                value={address.district}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                label="จังหวัด"
+                name="province"
+                onChange={handleAddressChange}
+                required
+                type="text"
+                value={address.province}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                label="รหัสไปรษณีย์"
+                name="zipcode"
+                onChange={handleAddressChange}
+                required
+                type="number"
+                value={address.zipcode}
+                variant="outlined"
+              />
+            </Grid>
+          </Grid>
+        </CardContent>
+        <Divider />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            p: 2
+          }}
+        >
+          <Button
+            color="primary"
+            variant="contained"
+            type="submit"
+          >
+            บันทึกที่อยู่
+          </Button>
+        </Box>
+        </form>
       </Card>
-    </form>
   );
 };
 

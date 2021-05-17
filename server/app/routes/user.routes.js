@@ -5,7 +5,7 @@ const pool = require('../config/db.config');
 router.put('/update/account/:id', async (req, res) => {
 
     try {
-        const {firstname, lastname, phone, gender} = req.body.params;
+        const {firstname, lastname, phone, gender} = req.body;
         const {id} = req.params;
 
         const newUser = await pool.query(`UPDATE Tenant 
@@ -194,6 +194,53 @@ router.get('/contract/:ssn', async (req, res) => {
 
         res.json(data.rows);
         
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({message: 'Server Error'});
+    }
+});
+
+//ผู้ใช้สามารถเรียกข้อมูลที่อยู่ของตนได้
+router.get('/address', async (req, res) => {
+    try {
+        const { ssn } = req.query;
+
+        const data = await pool.query(`
+            SELECT * FROM address WHERE ssn=${ssn};
+        `);
+
+        res.json(data.rows[0]);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({message: 'Server Error'});
+    }
+});
+
+//ผู้ใช้สามารถเรียกแก้ไขที่อยู่ของตนได้
+router.post('/address', async (req, res) => {
+    try {
+        const { ssn } = req.query;
+        const { hno, district, province, zipcode } = req.body;
+
+        const isExisted = await pool.query(`SELECT * FROM address WHERE ssn=${ssn};`);
+        let data;
+        if(isExisted.rows.length > 0) { // then update
+            await pool.query(`
+                UPDATE address
+                SET hno='${hno}', district='${district}', province='${province}', zipcode=${zipcode}
+                WHERE ssn=${ssn};
+            `);
+        } else { // else then insert new value
+            await pool.query(`
+                INSERT INTO address
+                VALUES (ssn=${ssn}, hno='${hno}', district='${district}', province='${province}', zipcode=${zipcode});
+            `);
+        }
+
+        
+        res.json({message: 'Update your address successfully!'});
+
     } catch (error) {
         console.error(error.message);
         res.status(500).json({message: 'Server Error'});

@@ -11,7 +11,7 @@ const RoomList = () => {
   const [customers, setCustomers] = useState([]);
 
   useEffect(() => {
-    axios.get(url() + '/api/admin/getallroom')
+    axios.get(url() + '/api/admin/room_all')
       .then(res => res.data)
       .then(data => {
         console.log(data)

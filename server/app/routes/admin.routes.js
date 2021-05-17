@@ -81,7 +81,8 @@ router.delete('/delete/all', async (req, res) => {
     res.send({message: 'Delete Successful!'});
 });
 
-router.get('/getallroom', async (req, res) => {
+// แอดมินสามารถเรียกดูห้องทั้งหมดในฐานข้อมูลได้
+router.get('/room_all', async (req, res) => {
     const data = await pool.query(`
         SELECT * FROM Room;
     `);
@@ -89,6 +90,7 @@ router.get('/getallroom', async (req, res) => {
     res.send(data.rows);
 })
 
+// แอดมินสามารถเรียกดูห้องที่ยังว่างในฐานข้อมูลได้
 router.get('/room', async (req, res) => {
     const { status } = req.query;
     const data = await pool.query(`

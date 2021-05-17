@@ -20,6 +20,7 @@ const DashboardNavbar = ({ onMobileNavOpen, ...rest }) => {
 
   const logout = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('address');
     alert('Log out Successful!');
     navigate('/');
   }

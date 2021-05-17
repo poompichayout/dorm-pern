@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -11,23 +11,21 @@ import axios from 'axios';
 import url from 'src/utils/developURL';
 
 const ContractView = (props) => {
-  const user = props.user;
   const [contract, setContract] = useState([]);
 
-  const handleChange = (event) => {
-    setContract({
-      ...contract,
-      [event.target.name]: event.target.value
-    });
-  };
-
   useEffect(() => {
-    axios.get(url() + `/api/user/contract/${user.ssn}`)
-    .then(res => {
-      setContract(res.data);
-    }).catch(err => {
-      console.error(err.message);
-    })
+    let getContract = async () => {
+      axios.get(url() + `/api/user/contract/${props.user.ssn}`)
+      .then(res => {
+        setContract(res.data);
+        console.log(contract);
+      })
+      .catch(err => {
+        console.error(err.message);
+      })
+    }
+
+    getContract();
   }, []);
 
   return (
