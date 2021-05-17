@@ -33,7 +33,7 @@ const Request = (props) => {
       ssn: user.ssn,
       detail: detail
     }
-    axios.post(url + '/api/user/request', data)
+    axios.post(url() + '/api/user/request', data)
     .then(res => {
       alert(res.data.message);
     })

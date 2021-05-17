@@ -50,7 +50,7 @@ const AccountProfileDetails = (props) => {
 
     console.log(user);
 
-    axios.put(url + `/api/user/update/account/${user.ssn}`, {
+    axios.put(url() + `/api/user/update/account/${user.ssn}`, {
       params: {...values}
     }).then( res => {
       alert(res.data.message);

@@ -29,7 +29,7 @@ const UpdateRoom = (props) => {
   const onCancelSubmit = (e) => {
     e.preventDefault();
     console.log('click');
-    axios.put(url + `/api/user/cancel/room`, {
+    axios.put(url() + `/api/user/cancel/room`, {
       bname: values.bname,
       roomid: values.roomid,
       ssn: user.ssn
@@ -55,7 +55,7 @@ const UpdateRoom = (props) => {
       ssn: user.ssn
     }
 
-    axios.put(url + `/api/user/update/room`, data)
+    axios.put(url() + `/api/user/update/room`, data)
     .then( res => {
       alert(res.data.message);
       localStorage.setItem('user', JSON.stringify({

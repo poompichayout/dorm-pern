@@ -28,7 +28,7 @@ const BillCard = (props) => {
   }
 
   const getData = () => {
-    axios.get(url + '/api/user/checkbill', {
+    axios.get(url() + '/api/user/checkbill', {
         params: {bname: user.bname, roomid: user.roomid}
     })
     .then(res => {

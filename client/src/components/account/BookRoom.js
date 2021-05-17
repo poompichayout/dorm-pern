@@ -31,7 +31,7 @@ const BookRoom = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    axios.post(url + `/api/user/booking_room`, {
+    axios.post(url() + `/api/user/booking_room`, {
       ...values,
       ssn: user.ssn
     }).then( res => {

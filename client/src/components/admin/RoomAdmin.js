@@ -30,7 +30,7 @@ const RoomAdmin = (props) => {
 
   const onRoomDataSubmit = (e) => {
     e.preventDefault();
-    axios.put(url + `/api/admin/update/price`, room)
+    axios.put(url() + `/api/admin/update/price`, room)
     .then(res => {
       alert(res.data.message);
     }).catch(err => {
